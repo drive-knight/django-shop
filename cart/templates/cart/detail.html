@@ -4,16 +4,16 @@
 {% block title %}Your shopping cart{% endblock %}
 
 {% block content %}
-<h1>Your shopping cart</h1>
+<h1>Ваша корзина</h1>
 <table class="cart">
     <thead>
     <tr>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Remove</th>
-        <th>Unit price</th>
-        <th>Price</th>
+        <th>Изображение</th>
+        <th>Товар</th>
+        <th>Количество</th>
+        <th>Удалить</th>
+        <th>Цена одного товара</th>
+        <th>Цена</th>
     </tr>
     </thead>
     <tbody>
@@ -21,30 +21,37 @@
     {% with product=item.product %}
     <tr>
         <td>
-            <a href="{{ product.get_absolute_url }}">
-                <img src="{% if product.image %}{{ product.image.url }}
- {% else %}{% static " img/no_image.png" %}{% endif %}">
+            <div class="card-body">
+                <div class="media">
+                <a href="{{ product.get_absolute_url }}">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" width="340" height="404">
+                    {% else %}
+                        <img src={% static "img/no_image.png" %}>
+                {% endif %}
             </a>
+                </div>
+            </div>
         </td>
         <td>{{ product.name }}</td>
         <td>{{ item.quantity }}</td>
-        <td><a href="{% url 'cart:cart_remove' product.id%}">Remove</a></td>
+        <td><a href="{% url 'cart:cart_remove' product.id%}">Удалить</a></td>
         <td class="num">${{ item.price }}</td>
         <td class="num">${{ item.total_price }}</td>
     </tr>
     {% endwith %}
     {% endfor %}
     <tr class="total">
-        <td>Total</td>
+        <td>Сумма</td>
         <td colspan="4"></td>
         <td class="num">${{ cart.get_total_price }}</td>
     </tr>
     </tbody>
 </table>
 <p class="text-right">  
-    <a href="{% url 'shop:product_list' %}" class="button light">Continue shopping</a>
+    <a href="{% url 'shop:product_list' %}" class="button light">Продолжить покупки</a>
     <a href="{% url 'orders:order_create' %}" class="button">
-    Checkout
+    Оплатить
     </a>
 </p>
 {% endblock %}
